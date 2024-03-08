@@ -203,7 +203,7 @@ export interface LibAdapters {
     createPgPromise(queryLatency?: number): any;
 
     /** Create a slonik pool bound to this db */
-    createSlonik(queryLatency?: number): any;
+    createSlonik(queryLatency?: number, clientConfigurationInput?: any): any;
 
     /** Create a pg-native instance bound to this db */
     createPgNative(queryLatency?: number): any;
