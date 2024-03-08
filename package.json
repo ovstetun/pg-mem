@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack --config ./tools/webpack.config.js",
+    "postinstall": "npm run build",
     "build": "rimraf lib && webpack --config ./tools/webpack.config.js --prod && npm run build-types",
     "build-types": "rimraf lib/types && tsc --project tsconfig.json && copyfiles -u 2 \"lib-types/src/**/*.ts\" lib/types && rimraf lib/types/tests && rimraf lib-types && echo \"export * from './types';\" >> lib/index.d.ts",
     "release": "git diff --exit-code && npm run test && npm run cover && npm run build && npm run build:deno && deno run tools/deno-test.ts && cd lib && npm publish && cd .. &&  npm run release-deno",
