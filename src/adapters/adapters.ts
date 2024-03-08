@@ -211,13 +211,28 @@ export class Adapters implements LibAdapters {
     }
 
     createSlonik(queryLatency?: number, clientConfigurationInput?: any) {
-        const { createMockPool, createMockQueryResult } = __non_webpack_require__('slonik');
+        const { createMockPool } = __non_webpack_require__('slonik');
+
+        const createMockQueryResultInt = (rows: ReadonlyArray<any>): any => {
+            let fields: any[] = [];
+            if (rows.length > 0) {
+                fields = Object.keys(rows[0]).map((it) => ({ dataTypeId: 0, name: it }));
+            }
+            return {
+                command: 'SELECT',
+                fields: fields,
+                notices: [],
+                rowCount: rows.length,
+                rows,
+            };
+        };
+
         return createMockPool({
             query: async (sql: string, args: any[]) => {
                 await delay(queryLatency ?? 0);
                 const formatted = replaceQueryArgs$(sql, args);
                 const ret = this.db.public.many(formatted);
-                return createMockQueryResult(ret);
+                return createMockQueryResultInt(ret);
             },
         }, clientConfigurationInput);
     }

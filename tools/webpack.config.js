@@ -9,6 +9,11 @@ const mode = process.argv.includes('--prod')
     ? 'production'
     : 'development';
 
+const crypto = require("crypto");
+const crypto_orig_createHash = crypto.createHash;
+crypto.createHash = algorithm => crypto_orig_createHash(algorithm == "md4" ? "sha256" : algorithm);
+
+
 module.exports = {
     entry: mode === 'production' ? {
         'index': resolve('src/index.ts'),
